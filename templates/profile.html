@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+        body {
+            background-color: hsl(38, 100%, 85%);
+            padding: 0;
+            margin: 0;
+        }
+        .box {
+            position: absolute;
+            display: flex;
+            visibility: hidden;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+        table {
+            border: 2px double black;
+            border-radius: 10px;
+            box-shadow: 15px -10px 5px 1px rgba(0, 0, 0, .2);
+            margin-right: 5%;
+        }
+        td {
+            height: 80px;
+            width: 80px;
+            border: 1px double black;
+            border-radius: 10px;
+            background: rgb(100,100,100) radial-gradient(circle at 0 0, rgba(255,255,255,.65), rgba(255,255,255,.35));
+            box-shadow:
+            inset rgba(0,0,0,.5) -3px -3px 8px,
+            inset rgba(255,255,255,.9) 3px 3px 8px,
+            rgba(0,0,0,.8) 3px 3px 8px -3px;
+            cursor: pointer;
+        }
+        img {
+            display: none;
+            height: 80px;
+            width: 80px;
+        }
+        .btn-start {
+            position: absolute;
+            visibility: visible;
+            cursor: pointer;
+            border-radius: 2.8rem;
+            font-weight: normal;
+            font-family: GothamPro, sans-serif;
+            font-size: 2rem;
+            background-color: rgb(212, 90, 90);
+            border: none;
+            padding: 1rem 2.3rem;
+        }
+        .monitor {
+            display: flex;
+            visibility: hidden;
+            border: 3px double black;
+            flex-direction: column;
+            width: 10%;
+             
+        }
+        #result {
+            position: absolute;
+            font-size: 250%;
+            
+        }
+        .nav-link {
+            position: absolute;
+            margin: 0.5% 0 0 2%;
+            
+        }
+        .btn-nav {
+            cursor: pointer;
+            border-radius: 2.0rem;
+            font-weight: normal;
+            font-family: GothamPro, sans-serif;
+            font-size: 1rem;
+            background-color: rgb(212, 90, 90);
+            border: none;
+            padding: 1rem 2.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-link">
+        <p style="font-size: 150%;">Ваш аккаунт: {{ email }}</p>
+        <a href="{{ url_for('logout') }}"><button class="btn-nav">Выход</button></a>
+    </div>
+    <div class="box">
+        {% if level > 2 %}
+        <button class="btn-start">ПРОДОЛЖИТЬ</button>
+        {% else %}
+        <button class="btn-start">СТАРТ</button>
+        {% endif %}
+        <div id="result"></div>
+        <table>
+            {% for i in field %}
+            <tr>{% for j in i %}
+                {% if j %}
+                <td><img src="{{ url_for('static', filename='img/bob.png') }}" alt="pic"></td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                {% endfor %}</tr>
+            {% endfor %}
+        </table>
+        <div class="monitor">
+            <div>Количество попыток: <p id="click">{{ (level * 1.5 + 0.1) |round |int }}</p></div>
+            <div>Количество картинок: <p id="img_count">{{ level }}</p></div>
+        </div>
+    </div>
+    <script>
+        let start = document.querySelector('.btn-start');
+        start.addEventListener('click', startGame);
+
+        function startGame(){
+            document.querySelector('.box').style.visibility = 'visible';
+            document.querySelector('.monitor').style.visibility = 'visible';
+            document.querySelector('.btn-start').style.visibility = 'hidden';
+            showTime();
+            game();
+        };
+
+        function windowSize(value) {
+            if (value > 9) {
+                let img = document.querySelectorAll('img');
+                for (let i=0; i < img.length; i++) {
+                    img[i].style.height = '60px';
+                    img[i].style.width = '60px';
+                }
+                let td = document.querySelectorAll('td');
+                for (let i=0; i < td.length; i++) {
+                    td[i].style.height = '60px';
+                    td[i].style.width = '60px';
+
+                }
+            }
+            if (value > 14) {
+                let img = document.querySelectorAll('img');
+                for (let i=0; i < img.length; i++) {
+                    img[i].style.height = '35px';
+                    img[i].style.width = '35px';
+                }
+                let td = document.querySelectorAll('td');
+                for (let i=0; i < td.length; i++) {
+                    td[i].style.height = '35px';
+                    td[i].style.width = '35px';
+
+                }
+            }
+        }
+
+        let table = document.querySelectorAll('td');
+        let count_image = {{ level }};
+        let click = Math.ceil(count_image * 1.5);
+        windowSize(count_image);
+
+        function showTime(){
+                let img = document.querySelectorAll('img');
+                for (let i=0; i < img.length; i++) {
+                    img[i].style.display = 'flex';
+                }
+                setTimeout(() => {for (let i=0; i < img.length; i++) {
+                    img[i].style.display = 'none';
+                }}, 3000)
+        }
+        function sendForm(){
+            let request = new FormData();
+            request.append('result', 'win');
+
+            let response = fetch("{{ url_for('profile', email=email)}}", {
+                method: 'POST',
+                body: request
+            });
+
+        };
+
+        function game(){setTimeout(()=>{for (td of table){
+                                            td.onmousedown = function(e){
+                                            td = e.currentTarget;
+                                            if (td.querySelector('img')) {
+                                                td.querySelector('img').style.display = 'flex';
+                                                td.querySelector('img').style.background = 'rgba(255,255,255,.65)';
+                                                count_image -= 1;
+                                                click -= 1;
+
+                                                if (count_image == 0){
+                                                    setTimeout(() => {document.querySelector('table').hidden = true;}, 700);
+                                                    setTimeout(() => {document.querySelector('.monitor').style.visibility = 'hidden';}, 700);
+                                                    setTimeout(() => {document.querySelector('#result').innerHTML = 'Победа';}, 1000);
+                                                    sendForm();
+                                                    setTimeout(function(){window.location.href = "{{url_for('profile', email = email)}}";}, 2000);}
+
+
+
+                                            } else {
+                                                td.style.background = 'white';
+                                                setTimeout(() => {  td.style.background = 'rgb(100,100,100)\
+                                                radial-gradient(circle at 0 0, rgba(255,255,255,.65),\
+                                                rgba(255,255,255,.35))'; }, 200);
+                                                click -= 1;
+                                            }
+                                            document.querySelector('#click').innerHTML = click;
+                                            document.querySelector('#img_count').innerHTML = count_image;
+                                            // (click == 0 < count_image != 0)
+                                            if (click == 0 && count_image != 0) {
+                                                    setTimeout(() => {document.querySelector('table').hidden = true;});
+                                                    setTimeout(() => {document.querySelector('.monitor').style.visibility = 'hidden';});
+                                                    setTimeout(() => {document.querySelector('#result').innerHTML = 'Вы проиграли';});
+                                                    setTimeout(function(){window.location.href = "{{ url_for('profile', email=email) }}";}, 1000);
+                                                }
+
+                                        };
+                                        }}, 3000)
+
+        }
+
+    </script>
+</body>
+
+</html>
