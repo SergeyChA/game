@@ -11,17 +11,14 @@
             padding: 0;
             margin: 0;
         }
-        .box {
-            position: absolute;
+        .box { 
             display: flex;
             visibility: hidden;
             justify-content: center;
             text-align: center;
             align-items: center;
-            height: 100%;
-            width: 100%;
-           
-               
+            height: 800px;
+            width: 100%; 
         }
         table {
             border: 2px double black;
@@ -67,7 +64,6 @@
             border: 3px double black;
             flex-direction: column;
             width: 10%;
-            justify-content: center;
             text-align: center;
             align-items: center;
              
@@ -78,8 +74,7 @@
             
         }
         .nav-link {
-            position: absolute;
-            margin: 2% 0 0 2%; 
+            margin: 20px 0 0 20px; 
         }
         .btn-nav {
             cursor: pointer;
@@ -90,6 +85,7 @@
             background-color: rgb(212, 90, 90);
             border: none;
             padding: 1rem 2.3rem;
+            margin-left: 10px;
         }
         h3 {
             margin: 0;
@@ -120,8 +116,12 @@
             {% endfor %}
         </table>
         <div class="monitor">
-            <h3>Количество попыток: <p id="click">{{ (level * 1.5 + 0.1) |round |int }}</p></h3>
-            <h3>Количество картинок: <p id="img_count">{{ level }}</p></h3>
+            <h3>Количество попыток: 
+                <p style="font-size: 200%; margin: 0;" id="click">{{ (level * 1.5 + 0.1) |round |int }}</p>
+            </h3>
+            <h3>Количество картинок: 
+                <p style="font-size: 200%; margin: 0;" id="img_count">{{ level }}</p>
+            </h3>
         </div>
     </div>
     

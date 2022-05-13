@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700;900&family=Roboto:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <title>Registration form</title>
+    <title>Регистрация</title>
     <style>
         body {
             margin: 0;
@@ -32,11 +32,11 @@
         .fa-solid {
             color: #dc3545;
         }
-        .success{
-        background: rgb(138, 196, 138);
+        .success {
+            background: rgb(138, 196, 138);
         }
-        .error{
-        background: rgb(226, 157, 157);
+        .error {
+            background: rgb(226, 157, 157);
         }
     </style>
 </head>
@@ -61,7 +61,7 @@
                     <input type="password" class="form-control" placeholder="Password" name="pass" pattern="^[a-zA-Z0-9]+$" required/>
                 </div>
                 <input type="submit" class="btn btn-danger form-control" value="Зарегистрироваться" />
-                <a href="{{url_for('login')}}">Вход</a>
+                <a href="{{ url_for('login') }}">Вход</a>
             </form>
         </div>
     </div>
