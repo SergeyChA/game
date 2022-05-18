@@ -11,7 +11,7 @@ def game():
         if request.method == 'POST':
             session['level'] = session.get('level') + 1
             return render_template('game.html', field=game_field(session.get('level')), level=session.get('level'))
-        if session.get('level') + 1 > 5:
+        if session.get('level') > 4:
             return render_template('login.html')
     else:
         session['level'] = 2
@@ -26,7 +26,7 @@ def login():
         user = Users.query.filter(Users.email == request.form['email']).first()
         if user and check_password_hash(user.password, request.form['pass']):
             session['email'] = request.form['email']
-            return redirect(url_for('profile', email=request.form['email']))# нужен ли профиль
+            return redirect(url_for('profile', email=request.form['email']))
         else:
             flash('Неправильный email или пароль', category='error')
     return render_template('login.html')

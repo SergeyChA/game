@@ -8,37 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700;900&family=Roboto:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <title>Регистрация</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: hsl(38, 100%, 85%);
-            font-family: "Fira Sans", sans-serif;
-            font-weight: 400;
-        }
-        form {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 6px;
-            filter: drop-shadow(1px 2px 4px hsl(56, 38%, 58%));
-            transform: translateY(0px);
-        }
-        form:focus-within {
-            transform: translateY(-4px);
-            filter: drop-shadow(2px 4px 16px hsl(56, 38%, 58%));
-        }
-
-        .fa-solid {
-            color: #dc3545;
-        }
-        .success {
-            background: rgb(138, 196, 138);
-        }
-        .error {
-            background: rgb(226, 157, 157);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='img/css/style.css') }}">
 </head>
 <body>
     <div class="container">
