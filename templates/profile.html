@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='img/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{{ email }}</title>
 </head>
 <body>
@@ -23,7 +23,7 @@
             {% for i in field %}
             <tr>{% for j in i %}
                 {% if j %}
-                <td><img src="{{ url_for('static', filename='img/images/bob.png') }}" alt="pic"></td>
+                <td><img src="{{ url_for('static', filename='bob.png') }}" alt="pic"></td>
                 {% else %}
                 <td></td>
                 {% endif %}
