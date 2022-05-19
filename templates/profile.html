@@ -40,6 +40,9 @@
         </div>
     </div>
     <script>
+        let table = document.querySelectorAll('td');
+        let count_image = '{{ level }}';
+        let click = Math.ceil(count_image * 1.5);
         let start = document.querySelector('.btn-start');
         start.addEventListener('click', startGame);
 
@@ -47,6 +50,7 @@
             document.querySelector('.box').style.visibility = 'visible';
             document.querySelector('.monitor').style.visibility = 'visible';
             document.querySelector('.btn-start').style.visibility = 'hidden';
+            windowSize(count_image);
             showTime();
             game();
         };
@@ -80,11 +84,6 @@
             }
         }
 
-        let table = document.querySelectorAll('td');
-        let count_image = '{{ level }}';
-        let click = Math.ceil(count_image * 1.5);
-        windowSize(count_image);
-
         function showTime(){
                 let img = document.querySelectorAll('img');
                 for (let i=0; i < img.length; i++) {
@@ -94,6 +93,7 @@
                     img[i].style.display = 'none';
                 }}, 3000)
         }
+
         function sendForm(){
             let request = new FormData();
             request.append('result', 'win');
@@ -102,7 +102,6 @@
                 method: 'POST',
                 body: request
             });
-
         };
 
         function game(){setTimeout(()=>{for (td of table){
@@ -121,8 +120,6 @@
                                                     sendForm();
                                                     setTimeout(function(){window.location.href = "{{url_for('profile', email = email)}}";}, 2000);}
 
-
-
                                             } else {
                                                 td.style.background = 'white';
                                                 setTimeout(() => {  td.style.background = 'rgb(100,100,100)\
@@ -130,6 +127,7 @@
                                                 rgba(255,255,255,.35))'; }, 200);
                                                 click -= 1;
                                             }
+
                                             document.querySelector('#click').innerHTML = click;
                                             document.querySelector('#img_count').innerHTML = count_image;
                                             if (click == 0 && count_image != 0) {
@@ -138,10 +136,8 @@
                                                     setTimeout(() => {document.querySelector('#result').innerHTML = 'Вы проиграли';});
                                                     setTimeout(function(){window.location.href = "{{ url_for('profile', email=email) }}";}, 1000);
                                                 }
-
                                         };
                                         }}, 3000)
-
         }
 
     </script>
